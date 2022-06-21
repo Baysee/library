@@ -26,8 +26,9 @@ if gcdpq~=1
 end
 
 if mod(q,2)==1
-    s=2*mulinv(2*p,q); %% sp=1+qe_q (mod 2q) -> s(2p)=1 mod(q)  (first comment from some time ago)
+    s=mod(2*mulinv(2*p,q),2*q); %% See eq. B4 %% sp=1+qe_q (mod 2q) -> s(2p)=1 mod(q)  (first comment from some time ago)
 %     s=2*mulinv(2*p,q); %% sp=1+qe_q (mod 2q) -> s(2p)=2+2q (mod(2q)) =2 mod (2q)
+%     s2=mod(4*p*mulinv(2*p,q).^2,2*q)
 else
     s= mulinv(p,2*q) ;
 end

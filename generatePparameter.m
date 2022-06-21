@@ -19,10 +19,19 @@
 % end
 % 
 function p=generatePparameter(s,q)
-
+if q==1
+    p=1
+    return
+end
 gcdpq=gcd(s,q);
 if gcdpq~=1
    error('s and q must be coprime!!')
+end
+sParity=mod(s,2);
+qParity=mod(q,2);
+
+if sParity==qParity
+    warning('s and q must have opposite parity!')
 end
 
 if mod(q,2)==1
@@ -31,6 +40,8 @@ if mod(q,2)==1
 else
     p= mulinv(s,2*q) ;
 end
+
+p2=solveCongruenceBrute(s,q)
 
 end
 
@@ -57,3 +68,32 @@ end
 y=(k*p+1)./x;       %find the multiplicative inverses of X
 end
 
+
+function p=solveCongruenceBrute(s,q)
+
+
+
+possibleP=1:2*q; 
+isCoprime=gcd(possibleP,q);
+possibleP(isCoprime>1)=[];
+
+solutionFound=0; iteration=1;
+
+while solutionFound==0 && iteration<numel(possibleP)+1
+   
+    spProd=s*possibleP(iteration);
+    congruenceEquality= mod(spProd,2*q)==1+q*mod(q,2)
+    if congruenceEquality
+        solutionFound=1
+        p=possibleP(iteration)
+    else
+        iteration=iteration+1
+    end
+    
+end
+
+if congruenceEquality==0
+   msg='could not solve congruence' 
+end
+
+end
