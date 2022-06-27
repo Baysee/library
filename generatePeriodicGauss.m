@@ -13,6 +13,7 @@ y=repmat(single,1,nReps);
 y=y(1:numel(x));
 
 if center==1
+    warning('centering generate periodic gauss doesnt work')
     lent=numel(x)
    cent=round(lent/2);
    left=mod(cent,nSingle);
@@ -20,6 +21,8 @@ if center==1
    shift=left-round(nSingle/2);
    y = circshift(y,shift);
    
+% (nReps*nSingle-numel(x)
+
 end
 
 end
