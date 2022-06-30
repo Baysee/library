@@ -1,4 +1,4 @@
-function data=loadDataQ(runDir,filename,varargin)
+function data=loadDataQ(runDir,filename,lastIndIni,varargin)
 % Read quantum data when there are many files.
 % Make varargin exist and equal 1 to force the function to read only one file
 
@@ -34,7 +34,29 @@ dataAll=[];
                 
                 if iFn_fileMeas==1
                     dataAll=data;
+                    
+                    % get a filtered version of the hist to adjust for
+                    % temporal drifts
+                    indsHist=1:lastIndIni;%19414; 
+                    filtBW=2^9; m=8;
+                    dat1=data(data(:,1)==1,:);
+                    refHist=histcounts(dat1(:,3),0:2^15);
+                    refHist=refHist(indsHist);
+                    filtRefHist=real(filtSG(refHist,filtBW,m,0));
                 else
+                    % Adjust for temporal shift
+                    dat1_new=data(data(:,1)==1,:);
+                    testHist=histcounts(dat1_new(:,3),0:2^15);
+                    testHist=testHist(indsHist);
+                    filtTestHist=real(filtSG(testHist,filtBW,m,0));
+
+                    [filtTestHistAligned,~,shift]=alignXcorr( filtTestHist,filtRefHist);
+%                      figure;plot(filtRefHist)
+%                        hold on
+%                     plot(filtTestHist); 
+%                     plot(filtTestHistAligned);
+                    data(:,3)=mod(data(:,3)+shift,lastIndIni);
+
                     data(:,2)=data(:,2)-min(data(:,2))+dataAll(end,2)+clockGap;
                     dataAll=[dataAll;data];
                 end
