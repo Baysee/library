@@ -15,7 +15,7 @@ end
 
 nMeas=numel(dir([runDir filename(1:end-3) ,'*_0.mat']));
 dataAll=[];
-if nMeas>1
+% if nMeas>1
     clockGap=2; % Put this amount of clock triggers between two subsequent measurement. Large enough to not account for a coincidence (i.e., bigger than trig delay) but not big enough to significantly alter total integration time
     for iFn_fileMeas=1:nMeas
         
@@ -55,7 +55,7 @@ if nMeas>1
             continue
         end
     end
-end
+% end
 
 data=dataAll;% clear dataAll
 
