@@ -50,7 +50,7 @@ dataAll=[];
                     testHist=testHist(indsHist);
                     filtTestHist=real(filtSG(testHist,filtBW,m,0));
 
-                    [filtTestHistAligned,~,shift]=alignXcorr( filtTestHist,filtRefHist);
+                    [~,~,shift]=alignXcorr( filtTestHist,filtRefHist);
 %                      figure;plot(filtRefHist)
 %                        hold on
 %                     plot(filtTestHist); 
